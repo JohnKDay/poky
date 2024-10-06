@@ -1,5 +1,6 @@
 name: Bitbake Core Image Sato
-
+# works with
+# act -r -P ubuntu-latest=-self-hosted --artifact-server-path $HOME/.act push
 on:
   push:
     branches: [ main ]
@@ -19,12 +20,16 @@ jobs:
       run: |
         docker run --rm \
           -v ${{ github.workspace }}:/workspace \
+          -v /home/archon/data:/home/jenkins/data \
+          -e BB_ENV_PASSTHROUGH_ADDITIONS="DL_DIR SSTATE_DIR" \
+          -e SSTATE_DIR=/home/jenkins/data/bitbake.sstate \
+          -e DL_DIR=/home/jenkins/data/bitbake.downloads \
           -w /workspace \
           johnkday/tselb:1 \
-          /bin/bash -c "source /workspace/poky/oe-init-build-env && bitbake core-image-sato"
+          /bin/bash -c 'source oe-init-build-env && bitbake core-image-minimal'
 
     - name: Archive build artifacts
       uses: actions/upload-artifact@v2
       with:
         name: build-artifacts
-        path: ${{ github.workspace }}/poky/build/tmp/deploy/images/qemux86-64
+        path: ${{ github.workspace }}/build/tmp/deploy/images/qemux86-64/
