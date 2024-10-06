@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, linux, ${{ github.actor }}]
+    runs-on: [self-hosted, linux, "${{ github.actor }}"]
     steps:
     - name: echo-default-env-veriables
       run: env
