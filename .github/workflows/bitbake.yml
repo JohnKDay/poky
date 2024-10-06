@@ -10,11 +10,14 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, ${GITHUB_ACTOR}]
 
     steps:
+    - name: echo-default-env-veriables
+      run: env
+
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Run Bitbake in Docker
       run: |
@@ -33,3 +36,4 @@ jobs:
       with:
         name: build-artifacts
         path: ${{ github.workspace }}/build/tmp/deploy/images/qemux86-64/
+        compression-level: 0
