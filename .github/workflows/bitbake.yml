@@ -32,7 +32,7 @@ jobs:
           /bin/bash -c 'source oe-init-build-env && bitbake core-image-minimal'
 
     - name: Archive build artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: build-artifacts
         path: ${{ github.workspace }}/build/tmp/deploy/images/qemux86-64/
